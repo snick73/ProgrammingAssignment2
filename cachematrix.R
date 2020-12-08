@@ -1,21 +1,8 @@
-## This assignment is about solving the inverse of a matrix by caching the 
-# result within a lexical scope of a function:  "makeCacheMatrix" and 
-# "cacheSolve". Caching is about using memory to avoid excess computation.
-# Lexical scopes, allow to create functions within a function and new 
-# "user defined" objects (data types) to store data within several environments
-###################################
-
-###################################
-## The function "makeCacheMatrix" creates a new, unique environment. 
-# The inverse matrix is cached inside the object m, within the main 
-# environment, which is unique for EACH instance the function is called.
-## The output of the function is a list with 5 named elements, which are 
-# the five functions defined herein: setmatrix, getmatrix, setinverse, 
-# getinverse and getenv
-###################################
+## This assignment is to solve the inverse of a matrix caching the 
+# result within a lexical scope of a function
 
 makeCacheMatrix <- function(x = matrix()) {
-# Example input: Insert matrix e.g x<-matrix(rnorm(64),8,8)
+# Example input: Insert matrix x<-matrix(rnorm(64),8,8)
 ## To check cached values: 
 # xMat<-makeCacheMatrix(x)  # Run the function
 # parent.env(xMat$getenv())$m  # Check the cached mean
@@ -29,27 +16,24 @@ setmatrix<-function(y){  # Set matrix value
 	m<<-NULL # search through parent environments for an existing definition of the variable and set to NULL
 	}
   
-getmatrix<-function() x  # Get the matrix value cached with setmatrix
-setinverse<-function(solve) m<<- solve  # Cached value of inverse matrix is saved in m
-getinverse<-function() m  # Get the saved value of inverse matrix m that was saved with setinverse
+getmatrix<-function() x  
+setinverse<-function(solve) m<<- solve  
+getinverse<-function() m  
 getenv<- function() environment()
 
-list (setmatrix=setmatrix, getmatrix = getmatrix, # creates list to house the four functions  
+list (setmatrix=setmatrix, getmatrix = getmatrix,
 setinverse = setinverse,
 getinverse = getinverse,
 getenv = getenv)
 
 }
 
-###################################
+
 ## The function "cacheSolve" returns the inverse of the matrix that is 
 # returned by makeCacheMatrix function, e.g. xMat$getmatrix()
-###################################
+
 
 cacheSolve <- function(xMat= m(), ...) {
-	## Return a matrix that is the inverse of 'x'
-	# Run function e.g. like this: minv<-cacheSolve(xMat = m)
-	# Compares matrix to what was there before!
 	m <- xMat$getinverse() # if an inverse has already been calculated this gets it
 	if(!is.null(m)){ # check to see if cacheSolve has been run before
 		if(xMat$setmatrix() == xMat$getmatrix()) { # check that matrix hasn't changed, and if it hasn't, sends a text message and returns the cached matrix
